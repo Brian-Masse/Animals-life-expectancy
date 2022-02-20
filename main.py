@@ -55,20 +55,23 @@ class Series:
         for age in self.data:   
         
             y = ((index * space ) + graph.pos[1] + 10) + random.uniform(0, space / 2)
-            x = (age * 20) + graph.pos[0]
+            x = (age * graph.interval) + graph.pos[0]
 
             if not np.isnan( x ):
                 render_point( ( x, y ), self.color, 2 )
         
 
 class Graph:
-    def __init__(self, size, position, series, interval, title):
+    def __init__(self, size, position, series, title):
         self.size = size
         self.pos = position 
         self.top_right = self.return_top_right()
         self.series = series
-        self.interval = interval
+        self.interval = self.return_interval()
         self.title = title
+
+    def return_interval(self):
+        return self.size[0] / 50
 
     def return_top_right(self):
         x = self.pos[0] + self.size[0]
@@ -89,7 +92,7 @@ class Graph:
             x = (num * self.interval) + self.pos[0]
             y = self.pos[1] - 10
             render_text(str(num), (x, y), dark, 10 )
-            num += self.interval
+            num += 2
 
             
 
@@ -100,7 +103,7 @@ class Graph:
     
     
 
-types = [ "Mammalia", "Reptilia", "Aves" ]
+types = [ "Mammalia", "Reptilia", "Aves", "Amphibia", "Chondrichthyes" ]
 genders = ["Male MLE", "Female MLE"]
 
 def create_series():
@@ -113,7 +116,7 @@ def create_series():
 
             series = Series(type, gender, base.return_RGB())
             master.append(series)
-            i += 10
+            i += 100 /  (len(types) * len(gender))
     return master
 
 
@@ -122,7 +125,7 @@ back = color( 150, 2, 100 ).return_RGB()
 
 screen.fill(back)
 
-graph = Graph( ( 800, 400 ), ( 150, 50 ), create_series(), 5, "The maximum life span for certain classifications of animals")
+graph = Graph( ( 800, 400 ), ( 150, 50 ), create_series(), "The maximum life span for certain classifications of animals")
 graph.render()
 
 while running:
