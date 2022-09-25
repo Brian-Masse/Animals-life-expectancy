@@ -99,7 +99,7 @@ class Graph:
 
     def render_series(self):
         for i in range(0, len(self.series)):
-            self.series[i].render(self, i)
+            self.series[0].render(self, i)
     
     
 
